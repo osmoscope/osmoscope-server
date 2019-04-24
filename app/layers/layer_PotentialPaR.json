@@ -1,0 +1,13 @@
+{
+  "id": "PotentialPandR",
+  "name": "Potential Park and Ride Parkings",
+  "doc": {
+    "description": "Parkings without park_ride information but close (400m) to stations without P+R parking.",
+    "why_problem": "Parkings not tagged as P+R could result in a detour to another P+R parking when performing intermodal routing.",
+    "how_to_fix": "Check on the ground if the potential parking is really a P+R parking and tag with either park_ride=yes or park_ride=no."
+  },
+  "updates": "irregulary",
+  "geojson_url": "data_PotentialPandR.json",
+  "stats_data_url": "stats_PotentialPandR.csv",
+  "overpass_query": "[out:json][maxsize:1073741824][timeout:3600];node({{bbox}})[railway~'station|halt'][!construction][!tourism]->.stations;nwr({{bbox}})[amenity=parking][park_ride][park_ride!=no]->.park_and_ride_parkings;(node.stations;-node.stations(around.park_and_ride_parkings:400);)->.stations_without_park_ride_parkings;(nwr(around.stations_without_park_ride_parkings:400)[amenity=parking][access!~'^privat'][access!=customers][access!=permissive][access!=destination][!park_ride];);(._;>;);out;"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "StationsWithoutPandR",
+  "name": "Stations/Halts without P+R parking",
+  "doc": {
+    "description": "Stations or halts which don't have a parking tagged with park_ride close by (400m).",
+    "why_problem": "A parking not tagged as P+R could result in a detour to another P+R parking.",
+    "how_to_fix": "Check on the ground if there is a P+R in the vicinity of the station/halt, which usually is the case."
+  },
+  "updates": "irregulary",
+  "geojson_url": "data_StationsWithoutPandR.json",
+  "stats_data_url": "stats_StationsWithoutPandR.csv",
+  "overpass_query": "[out:json][maxsize:1073741824];node[railway~'station|halt'][usage!=tourism]({{bbox}})->.stations;nwr[amenity=parking][park_ride][park_ride!=no]({{bbox}})->.park_ride;(node.stations; - node.stations(around.park_ride:400););(._;>;);out;"
+}

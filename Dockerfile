@@ -1,7 +1,7 @@
 # To build:
 # docker build -t mfdz/osmoscope-server .
 # To run:
-# docker run -p 5000:5000 mfdz/osmoscope-server
+# docker run -p 5000:5000 -v $PWD/layers/:/usr/src/app/layers mfdz/osmoscope-server
 FROM python:3
 
 WORKDIR /usr/src/app

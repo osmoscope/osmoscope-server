@@ -1,0 +1,13 @@
+{
+  "id": "PaRsWithoutStation",
+  "name": "P+R Parkings without Station",
+  "doc": {
+    "description": "Park and Ride parkings which don't have a railway station, tram_stop or halt close by (400m).",
+    "why_problem": "Some P+R parkings are wrongly tagged as park_ride though they are not, or if they are, perhaps a close by station or halt is not mapped correctly or not at all.",
+    "how_to_fix": "Check on the ground if this parking is an P+R parking. It might be park_ride for a different mode than train, so perhaps park_rid=bus|hov might be more appropriate. If a station or halt is missing, add or correct it."
+  },
+  "updates": "irregulary",
+  "geojson_url": "data_PaRsWithoutStation.json",
+  "stats_data_url": "stats_PaRsWithoutStation.csv",
+  "overpass_query": "[out:json][maxsize:1073741824];(node({{bbox}})[railway~'station|halt|tram_stop'];)->.railway_station;(nwr[amenity=parking][park_ride=yes]({{bbox}});)->.park_ride;(nwr.park_ride; - nwr.park_ride(around.railway_station:400););(._;>;);out;"
+}
