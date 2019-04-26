@@ -3,15 +3,26 @@ import json
 import logging
 import os 
 import overpass
-from osmtogeojson import osmtogeojson
+from osmtogeojson import osmtogeojson, merge
 
 logger = logging.getLogger(__name__)
 
 class OverpassCheck:
 
-    def __init__(self, area_or_boundingbox):
+    def __init__(self, area_or_boundingbox, referer = None, fromHeader = None):
         self.area_or_boundingbox = area_or_boundingbox
+        
+        headers = {
+            "Accept-Charset": "utf-8;q=0.7,*;q=0.7",
+            "User-Agent": "Osmoscope-Server/https://github.com/osmoscope/osmoscope-server"
+        }
+        if fromHeader:
+            self.overpass_headers["From"] = fromHeader
+        if referer:
+            self.overpass_headers["Referer"] = referer
     
+        self.api = overpass.API(timeout=600, headers = headers)
+        
     def is_supported(self, layerdefinition):
         return 'overpass_query' in layerdefinition
 
@@ -48,11 +59,10 @@ class OverpassCheck:
         
         query = layerdefinition['overpass_query']
 
-        api = overpass.API(timeout=600)
         bbQuery = BoundingBoxQuery(query, self.area_or_boundingbox)
         logger.debug('Retrieve overpass layer via query %s', bbQuery)
         # overpass-wrapper currently does not support custom settings, so build=False
-        response = api.get(bbQuery, 'json', build=False)
+        response = self.api.get(bbQuery, 'json', build=False)       
         geojson_response = osmtogeojson.process_osm_json(response)
 
         return geojson_response

@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__, static_url_path='')
-app.config.from_pyfile('config.py', silent=True)
+app.config.from_pyfile('config/config.py', silent=True)
  
 @app.route('/')
 def osmoscope_server():
@@ -28,7 +28,12 @@ def add_header(response):
 
 def update_layers():
     logger.info("Triggered update_layers")
-    LayersValidator(app.config['OSMOSCOPE_AREA_OR_BOUNDINGBOX']).check_all_layers()
+    LayersValidator(app.config['OSMOSCOPE_AREA_OR_BOUNDINGBOX'], 
+        servername = app.config['OSMOSCOPE_SERVERNAME'],
+        referer = app.config.get('OSMOSCOPE_REFERER'),
+        fromHeader = app.config.get('OSMOSCOPE_ADMIN_MAIL')
+        ).check_all_layers()
+               
  
 if __name__ == '__main__':
     update_layers()
@@ -37,10 +42,12 @@ if __name__ == '__main__':
         schedule = '0 0 * * *'
         logger.info("Registring update_layers job with schedule %s", schedule)
         scheduler = BackgroundScheduler()
-        # TODO Later on, multiple jobs respecting the updates-properties of layer definitions 
+        # TODO Later on, multiple jobs could be defined, respecting the updates-properties of layer definitions 
         scheduler.add_job(func=update_layers, trigger=CronTrigger.from_crontab(schedule))
         scheduler.start()
         # Shut down the scheduler when exiting the app
         atexit.register(lambda: scheduler.shutdown())
-
+    else:
+        logger.info("Not registring update_layers job as we are not running in production mode", schedule)
+        
     app.run(host='0.0.0.0')

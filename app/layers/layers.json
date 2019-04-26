@@ -1,1 +1,4 @@
-{"name":"OpenTripPlanner OSM related Graph Annotations","layers":["layer_PaRsWithoutStation.json","layer_PotentialPaR.json","layer_StationWithoutPaR.json"]}
+{
+  "name": "Osmoscope Server",
+  "layers": []
+}
