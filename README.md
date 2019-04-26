@@ -21,7 +21,6 @@ To run Osmoscope Server from the command line, you'll need python3, pip and virt
 ```
 $ mkvirtualenv osmoscope-server
 $ pip install -r requirements.txt
-$ cd app
 $ python app.py 
 ```
 Note: you should do this in development only!
@@ -37,7 +36,7 @@ docker build -t mfdz/osmoscope-server .
 and start it via e.g.
 
 ```
-docker run -p 5000:5000 -v $PWD/layers/:/usr/src/app/layers mfdz/osmoscope-server
+docker run -p 5000:5000 -v $PWD/config/:/usr/src/app/layers  -v $PWD/config/:/usr/src/app/layers mfdz/osmoscope-server
 ```
 
 You should see Osmoscope Server generating the data layers and finally starting a server using port 5000.
@@ -87,5 +86,5 @@ See the file LICENSE.txt for the complete text of the license.
 ## Authors
 
 This program was written and is maintained by Holger Bruch (hb at mfdz dot de). 
-It was motivated by Jochen Topf's osmoscope-ui, a new decentralized OSM quality assurance tool.
+It was motivated by Jochen Topf's Osmoscope, a new decentralized OSM quality assurance tool.
 
