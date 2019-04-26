@@ -1,6 +1,8 @@
 # Osmoscope generated files
 stats_*.csv
 data_*.json
+app/layers/layer_*.json
+overpass_*.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
