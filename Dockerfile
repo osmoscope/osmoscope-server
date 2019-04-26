@@ -1,19 +1,19 @@
 # To build:
 # docker build -t mfdz/osmoscope-server .
 # To run:
-# docker run -p 5000:5000 -v $PWD/config/:/usr/src/app/config -v $PWD/layers/:/usr/src/app/layers mfdz/osmoscope-server
-FROM python:3
+# docker run -p 5000:5000 -v $PWD/config/:/app/config -v $PWD/layers/:/app/layers mfdz/osmoscope-server
+FROM tiangolo/uwsgi-nginx-flask:python3.7
+# For details, see  
+# https://hub.docker.com/r/tiangolo/uwsgi-nginx-flask/
 
-WORKDIR /usr/src/app
+COPY . /app
 
-COPY requirements.txt ./
+ENV LISTENPORT 80
 
-RUN pip install --upgrade pip && \
-  pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+#create logging dir
+RUN mkdir -p /opt/logs/
 
-EXPOSE 5000
-VOLUME ["usr/src/app/layers","usr/src/app/config"] 
-
-CMD [ "python", "./app.py" ]
+VOLUME ["/app/layers","/app/config"] 
