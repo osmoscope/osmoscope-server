@@ -39,7 +39,7 @@ if __name__ == '__main__':
     update_layers()
 
     if app.config['ENV'] == 'production':
-        schedule = '0 0 * * *'
+        schedule = app.config['OSMOSCOPE_UPDATE_SCHEDULE']
         logger.info("Registring update_layers job with schedule %s", schedule)
         scheduler = BackgroundScheduler()
         # TODO Later on, multiple jobs could be defined, respecting the updates-properties of layer definitions 
