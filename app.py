@@ -36,7 +36,9 @@ def update_layers():
                
  
 if __name__ == '__main__':
-    update_layers()
+    # TODO perhaps run on startup, if not any layer exists?
+    if app.config['OSMOSCOPE_CHECK_ON_STARTUP']:
+        update_layers()
 
     if app.config['ENV'] == 'production':
         schedule = app.config['OSMOSCOPE_UPDATE_SCHEDULE']
