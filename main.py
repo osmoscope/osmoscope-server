@@ -7,7 +7,7 @@ from flask import Flask, request, send_from_directory
 from osmoscope.validator import LayersValidator
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
 
 app = Flask(__name__, static_url_path='')
 app.config.from_pyfile('config/config.py', silent=True)
@@ -36,10 +36,12 @@ def update_layers():
                
  
 if __name__ == '__main__':
-    update_layers()
+    # TODO perhaps run on startup, if not any layer exists?
+    if app.config['OSMOSCOPE_CHECK_ON_STARTUP']:
+        update_layers()
 
     if app.config['ENV'] == 'production':
-        schedule = '0 0 * * *'
+        schedule = app.config['OSMOSCOPE_UPDATE_SCHEDULE']
         logger.info("Registring update_layers job with schedule %s", schedule)
         scheduler = BackgroundScheduler()
         # TODO Later on, multiple jobs could be defined, respecting the updates-properties of layer definitions 
