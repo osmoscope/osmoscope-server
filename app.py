@@ -7,7 +7,7 @@ from flask import Flask, request, send_from_directory
 from osmoscope.validator import LayersValidator
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
 
 app = Flask(__name__, static_url_path='')
 app.config.from_pyfile('config/config.py', silent=True)
