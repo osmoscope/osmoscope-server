@@ -36,7 +36,7 @@ docker build -t mfdz/osmoscope-server .
 and start it via e.g.
 
 ```
-docker run -p 5000:5000 -v $PWD/config/:/usr/src/app/layers  -v $PWD/config/:/usr/src/app/layers mfdz/osmoscope-server
+docker run -p 5000:80 -v $PWD/config/:/usr/src/app/layers  -v $PWD/config/:/usr/src/app/layers mfdz/osmoscope-server
 ```
 
 You should see Osmoscope Server generating the data layers and finally starting a server using port 5000.
@@ -67,13 +67,13 @@ format and make them available for download. It also maintains statistic files f
 For a more detailed description [read this](doc/creating-layers.md).
 
 
-## Python libraries used
+## Libraries and projects used
 
 * [Flask](http://flask.pocoo.org)
 * [osmtogeojson](https://github.com/tommyjcarpenter/osmtogeojson)
 * [apscheduler](https://apscheduler.readthedocs.io/en/latest/)
 * [overpass api python wrapper](https://github.com/mvexel/overpass-api-python-wrapper)
-
+* [uwsgi-nginx-flask docker](https://github.com/tiangolo/uwsgi-nginx-flask-docker)
 
 ## License
 

@@ -1,19 +1,22 @@
 # To build:
 # docker build -t mfdz/osmoscope-server .
 # To run:
-# docker run -p 5000:5000 -v $PWD/config/:/usr/src/app/config -v $PWD/layers/:/usr/src/app/layers mfdz/osmoscope-server
-FROM python:3
+# docker run -p 5000:80 -v $PWD/config/:/app/config -v $PWD/layers/:/app/layers mfdz/osmoscope-server
+FROM tiangolo/uwsgi-nginx-flask:python3.7
+# For details, see  
+# https://hub.docker.com/r/tiangolo/uwsgi-nginx-flask/
 
-WORKDIR /usr/src/app
+# Replace supervisord.conf to start validate_periodically as well
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-COPY requirements.txt ./
+COPY requirements.txt .
 
 RUN pip install --upgrade pip && \
   pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-EXPOSE 5000
-VOLUME ["usr/src/app/layers","usr/src/app/config"] 
+#create logging dir
+RUN mkdir -p /opt/logs/
 
-CMD [ "python", "./app.py" ]
+VOLUME ["/app/layers","/app/config"] 
