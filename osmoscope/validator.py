@@ -56,11 +56,15 @@ class LayersValidator():
         for filename in os.listdir(self.layers_configdir):
             if (re.search(self.layerdef_file_pattern, filename)):
                 with open(self.layers_configdir+filename) as layerdef_file:
-                    layerdefinition = json.load(layerdef_file)
+                    try:
+                        layerdefinition = json.load(layerdef_file)
                     
-                    logger.info("Loaded layer %s", layerdef_file.name)
+                        logger.info("Loaded layer %s", layerdef_file.name)
                     
-                    self.check_layer(layerdefinition)
+                        self.check_layer(layerdefinition)
+                    except:
+                        logger.exception("Layer check failed for layer %s", layerdef_file.name)
+
         self._update_layers_index()
 
     def check_layer(self, layerdefinition):
